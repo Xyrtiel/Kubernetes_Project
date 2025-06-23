@@ -1,23 +1,14 @@
 #!/bin/bash
 
-kubectl delete -f cadvisor.daemonset.yaml
-kubectl delete -f postgres.secret.yaml
-kubectl delete -f postgres.configmap.yaml
-kubectl delete -f postgres.volume.yaml
-kubectl delete -f postgres.deployment.yaml
-kubectl delete -f postgres.service.yaml
-kubectl delete -f redis.configmap.yaml
-kubectl delete -f redis.deployment.yaml
-kubectl delete -f redis.service.yaml
-kubectl delete -f poll.deployment.yaml
-kubectl delete -f poll.service.yaml
-kubectl delete -f poll.ingress.yaml
-kubectl delete -f result.deployment.yaml
-kubectl delete -f result.service.yaml
-kubectl delete -f result.ingress.yaml
-kubectl delete -f worker.deployment.yaml
-kubectl delete -f traefik.deployment.yaml
-kubectl delete -f traefik.service.yaml
-kubectl delete -f traefik.rbac.yaml
+echo "🗑️ Suppression de toutes les ressources Kubernetes du projet..."
 
-echo "✅ Tous les objets Kubernetes ont été supprimés"
+# kubectl peut prendre tous les fichiers en une seule commande
+kubectl delete -f result.ingress.yaml -f result.service.yaml -f result.deployment.yaml \
+               -f poll.ingress.yaml -f poll.service.yaml -f poll.deployment.yaml \
+               -f worker.deployment.yaml \
+               -f redis.service.yaml -f redis.deployment.yaml -f redis.configmap.yaml \
+               -f postgres.service.yaml -f postgres.deployment.yaml -f postgres.volume.yaml -f postgres.configmap.yaml -f postgres.secret.yaml \
+               -f traefik.service.yaml -f traefik.deployment.yaml -f traefik.rbac.yaml -f traefik.ingressclass.yaml \
+               -f cadvisor.daemonset.yaml --ignore-not-found=true
+
+echo "✅ Suppression terminée."

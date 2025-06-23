@@ -19,7 +19,9 @@ spec:
           image: traefik:2.7
           args:
             - "--api.insecure=true"
+            - "--api.dashboard=true"
             - "--providers.kubernetesIngress=true"
+            - "--providers.kubernetesingress.ingressclass=traefik"
             - "--entryPoints.web.address=:80"
             - "--entryPoints.websecure.address=:443"
           ports:

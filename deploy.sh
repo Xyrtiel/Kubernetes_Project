@@ -24,21 +24,16 @@ kubectl apply -f redis.service.yaml
 
 # 4. Applications poll, worker, result + ingress
 echo "✅ Déploiement de l'application (poll, worker, result)..."
-kubectl apply -f poll.deployment.yaml
-kubectl apply -f poll.service.yaml
-kubectl apply -f poll.ingress.yaml
-
-kubectl apply -f worker.deployment.yaml
-
-kubectl apply -f result.deployment.yaml
-kubectl apply -f result.service.yaml
-kubectl apply -f result.ingress.yaml
+kubectl apply -f poll.deployment.yaml -f poll.service.yaml -f poll.ingress.yaml -f worker.deployment.yaml -f result.deployment.yaml -f result.service.yaml -f result.ingress.yaml
 
 # 5. Traefik
 echo "✅ Déploiement de Traefik..."
+# On déploie le ServiceAccount, le RBAC, l'IngressClass et le Service AVANT le Déploiement
+# pour éviter une race condition où le pod Traefik démarre avant que son service n'existe.
 kubectl apply -f traefik.rbac.yaml
-kubectl apply -f traefik.deployment.yaml
+kubectl apply -f traefik.ingressclass.yaml
 kubectl apply -f traefik.service.yaml
+kubectl apply -f traefik.deployment.yaml
 
 # 6. Initialiser la base PostgreSQL avec la table "votes"
 echo "⏳ Attente du démarrage de PostgreSQL..."
